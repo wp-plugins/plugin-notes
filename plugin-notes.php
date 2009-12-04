@@ -2,12 +2,13 @@
 /*
 Plugin Name: Plugin Notes
 Plugin URI: http://wordpress.org/extend/plugins/plugin-notes/
-Description: Allows you to add notes to plugins. 
-Author: Mohammad Jangda
-Version: 0.1
+Description: Allows you to add notes to plugins. Simple and sweet.
+Author: Mo Jangda
+Version: 1.0
 Author URI: http://digitalize.ca/
 */
 
+// Localization, what?!
 $plugin_notes_plugin_dir = basename(dirname(__FILE__));
 load_plugin_textdomain( 'plugin_notes','wp-content/plugins/'.$plugin_notes_plugin_dir, $plugin_notes_plugin_dir);
 
@@ -17,6 +18,9 @@ class plugin_notes {
 	var $notes_option = 'plugin_notes';
 	var $nonce_added = false;
 	
+	/**
+	 * Object constructor for plugin
+	 */
 	function __construct() {
 
 		// TODO: get notes only on plugin page
@@ -33,8 +37,8 @@ class plugin_notes {
 		
 	}
 	
-	/* Adds necessary javascript and css files
-	 * 
+	/**
+	 * Adds necessary javascript and css files
 	 */
 	function enqueue_scripts() {
 		global $pagenow;
@@ -52,6 +56,9 @@ class plugin_notes {
 		}
 	}
 	
+	/**
+	 * Adds a nonce to the plugin page so we don't get nasty people doing nasty things
+	 */
 	function plugin_row_meta( $plugin_meta, $plugin_file, $plugin_data, $context ) {
 		$note = $this->notes[$plugin_file];
 		$this->_add_plugin_note($note, $plugin_data, $plugin_file);
@@ -64,6 +71,9 @@ class plugin_notes {
 		return $plugin_meta;
 	}
 	
+	/**
+	 * Outputs pluging note for the specified plugin
+	 */
 	function _add_plugin_note ( $note = null, $plugin_data, $plugin_file ) {
 		$plugin_safe_name = $this->_get_plugin_safe_name($plugin_data['Name']);
 		$actions = array();
@@ -83,7 +93,7 @@ class plugin_notes {
 		<div class="<?php echo $note_class ?>">
 			<?php $this->_add_plugin_form($note_text, $plugin_safe_name, $plugin_file, true); ?>
 			
-			<div id="wp-plugin_note_<?php echo $plugin_safe_name ?>" ondblclick="edit_plugin_note('<?php echo $plugin_safe_name ?>');">
+			<div id="wp-plugin_note_<?php echo $plugin_safe_name ?>" ondblclick="edit_plugin_note('<?php echo $plugin_safe_name ?>');" title="Double click to edit me!">
 				<span class="wp-plugin_note"><?php echo $note_text; ?></span>
 				<span class="wp-plugin_note_user"><?php echo $note_author->display_name; ?></span>
 				<span class="wp-plugin_note_date"><?php echo $note_date ?></span>
@@ -95,6 +105,9 @@ class plugin_notes {
 		<?php
 	}
 	
+	/**
+	 * Outputs form to add/edit/delete a plugin note
+	 */
 	function _add_plugin_form ( $note = '', $plugin_safe_name, $plugin_file, $hidden = true ) {
 		$plugin_form_style = ($hidden) ? 'style="display:none"' : '';
 		?>
@@ -108,12 +121,18 @@ class plugin_notes {
 				</span>
 				<input type="hidden" name="wp-plugin_note_slug_<?php echo $plugin_safe_name ?>" value="<?php echo $plugin_file ?>" />
 			</div>
-		<?
+		<?php
 	}
+	/**
+	 * Returns a cleaned up version of the plugin name, i.e. it's slug
+	 */
 	function _get_plugin_safe_name ( $name ) {
 		return sanitize_title($name);
 	}
 	
+	/**
+	 * Function that handles editing of the plugin via AJAX
+	 */
 	function ajax_edit_plugin_note ( ) {
 		global $current_user;
 		
@@ -185,6 +204,7 @@ class plugin_notes {
 		return; 
 	}
 	
+	/* Some sweet function to get/set go!*/
 	function _get_notes() { return get_option($this->notes_option);	}
 	function _set_notes($notes) { return update_option($this->notes_option, $notes); }
 }

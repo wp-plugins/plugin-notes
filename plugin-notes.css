@@ -8,6 +8,7 @@
 }
 .wp-plugin_note_box_blank {
 	margin-bottom: 5px;
+	width: 300px;
 }
 	.wp-plugin_note {
 		display: block;
@@ -31,7 +32,7 @@
 		}
 	.wp-plugin_note_edit_actions {
 		display: block;
-		margin: 5px 0 5px 250px;
+		margin: 5px 0 5px 0;
 	}
 	.wp-plugin_note_error {
 		display: block;
