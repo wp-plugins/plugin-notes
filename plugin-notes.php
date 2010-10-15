@@ -66,14 +66,15 @@ class plugin_notes {
 	 * Adds a nonce to the plugin page so we don't get nasty people doing nasty things
 	 */
 	function plugin_row_meta( $plugin_meta, $plugin_file, $plugin_data, $context ) {
-		$note = $this->notes[$plugin_file];
-		$this->_add_plugin_note($note, $plugin_data, $plugin_file);
-		
-		if(!$this->nonce_added) {
-			?><input type="hidden" name="wp-plugin_notes_nonce" value="<?php echo wp_create_nonce('wp-plugin_notes_nonce'); ?>" /><?php
-			$this->nonce_added = true;
+		if( isset( $this->notes[$plugin_file] ) ) {
+			$note = $this->notes[$plugin_file];
+			$this->_add_plugin_note($note, $plugin_data, $plugin_file);
+			
+			if(!$this->nonce_added) {
+				?><input type="hidden" name="wp-plugin_notes_nonce" value="<?php echo wp_create_nonce('wp-plugin_notes_nonce'); ?>" /><?php
+				$this->nonce_added = true;
+			}
 		}
-		
 		return $plugin_meta;
 	}
 	
