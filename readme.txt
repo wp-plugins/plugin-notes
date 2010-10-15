@@ -18,8 +18,9 @@ Note: the plugin requires PHP5+
 
 = 2010-10-15 / 1.1 =
 
-* Certain HTML tags are now allowed in notes: `<p> <a> <b> <strong> <i> <em> <img>`. Thanks to [Dave Abrahams](http://www.boostpro.com) for suggesting this feature. 
+* Certain HTML tags are now allowed in notes: `<p> <a> <b> <strong> <i> <em> <u> <img>`. Thanks to [Dave Abrahams](http://www.boostpro.com) for suggesting this feature. 
 * Some style tweaks
+* Fixed PHP Error Notices
 
 = 2009-12-04 / 1.0 =
 

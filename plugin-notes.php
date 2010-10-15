@@ -156,7 +156,7 @@ class plugin_notes {
 		if (current_user_can('edit_plugins')) {
 			// Get notes array
 			$notes = $this->_get_notes();
-			$note_text = trim(strip_tags( stripslashes( $_POST['plugin_note'] ), '<p><b><i><em><strong><a><img>'));
+			$note_text = trim(strip_tags( stripslashes( $_POST['plugin_note'] ), '<p><b><i><em><u><strong><a><img>'));
 			// TODO: Escape this?
 			$plugin = $_POST['plugin_slug'];
 			$plugin_name = esc_html($_POST['plugin_name']);
