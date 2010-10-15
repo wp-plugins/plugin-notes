@@ -15,6 +15,7 @@ function edit_plugin_note( plugin_name ) {
 function delete_plugin_note( plugin_name ) {
 	if(confirm(i18n.plugin_notes.confirm_delete)) {
 		var note_elements = get_plugin_note_elements(plugin_name);
+		note_elements.box.find('.waiting').show();
 		note_elements.form.input.val('');
 		save_plugin_note( plugin_name );
 	}

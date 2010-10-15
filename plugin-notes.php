@@ -3,9 +3,28 @@
 Plugin Name: Plugin Notes
 Plugin URI: http://wordpress.org/extend/plugins/plugin-notes/
 Description: Allows you to add notes to plugins. Simple and sweet.
-Author: Mo Jangda
+Author: Mohammad Jangda
 Version: 1.1
 Author URI: http://digitalize.ca/
+
+Copyright 2009-2010 Mohammad Jangda
+
+GNU General Public License, Free Software Foundation <http://creativecommons.org/licenses/GPL/2.0/>
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
 */
 
 define( 'PLUGIN_NOTES_VERSION', 1.1 );
@@ -29,7 +48,6 @@ class plugin_notes {
 	 */
 	function __construct() {
 
-		// TODO: get notes only on plugin page
 		$this->notes = $this->_get_notes();
 		
 		// Add notes to plugin row
@@ -108,6 +126,7 @@ class plugin_notes {
 				<span class="wp-plugin_note_date"><?php echo $note_date ?></span>
 				<span class="wp-plugin_note_actions">
 					<?php echo implode(' | ', $actions); ?>
+					<span class="waiting" style="display: none;"><img alt="<?php _e('Loading...', 'plugin-notes') ?>" src="images/wpspin_light.gif" /></span>
 				</span>
 			</div>
 		</div>
@@ -124,6 +143,7 @@ class plugin_notes {
 				<textarea name="wp-plugin_note_text_<?php echo $plugin_safe_name ?>" cols="40" rows="3"><?php echo $note; ?></textarea>
 				<span class="wp-plugin_note_error error" style="display: none;"></span>
 				<span class="wp-plugin_note_edit_actions">
+					<?php // TODO: Unobtrusify the javascript ?>
 					<a href="#" onclick="save_plugin_note('<?php echo $plugin_safe_name ?>');return false;" class="button-primary"><?php _e('Save', 'plugin-notes') ?></a>
 					<a href="#" onclick="cancel_plugin_note('<?php echo $plugin_safe_name ?>');return false;" class="button"><?php _e('Cancel', 'plugin-notes') ?></a>
 					<span class="waiting" style="display: none;"><img alt="<?php _e('Loading...', 'plugin-notes') ?>" src="images/wpspin_light.gif" /></span>
@@ -217,7 +237,7 @@ class plugin_notes {
 	function _set_notes($notes) { return update_option($this->notes_option, $notes); }
 }
 
-add_action( 'init', 'plugin_notes_init' );
+add_action( 'admin_init', 'plugin_notes_init' );
 
 function plugin_notes_init() {
 	/** Let's get the plugin rolling **/

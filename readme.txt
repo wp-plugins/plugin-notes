@@ -1,8 +1,8 @@
 === Plugin Notes ===
 Contributors: batmoo
 Donate link: http://digitalize.ca/donate
-Tags: plugin, plugin notes, memo, meta, 
-Tested up to: 2.9
+Tags: plugin, plugin notes, memo, meta
+Tested up to: 3.0
 Requires at least: 2.8
 Stable tag: 1.1
 
