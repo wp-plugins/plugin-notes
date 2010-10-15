@@ -4,9 +4,11 @@ Plugin Name: Plugin Notes
 Plugin URI: http://wordpress.org/extend/plugins/plugin-notes/
 Description: Allows you to add notes to plugins. Simple and sweet.
 Author: Mo Jangda
-Version: 1.0
+Version: 1.1
 Author URI: http://digitalize.ca/
 */
+
+define( 'PLUGIN_NOTES_VERSION', 1.1 );
 
 // Localization, what?!
 $plugin_notes_plugin_dir = basename(dirname(__FILE__));
@@ -17,6 +19,10 @@ class plugin_notes {
 	var $notes = array();
 	var $notes_option = 'plugin_notes';
 	var $nonce_added = false;
+	
+	function plugin_notes() {
+		$this->__construct();
+	}
 	
 	/**
 	 * Object constructor for plugin
@@ -44,8 +50,8 @@ class plugin_notes {
 		global $pagenow;
 		
 		if($pagenow == "plugins.php") {
-			wp_enqueue_script('plugin-notes', plugins_url('plugin-notes/plugin-notes.js'), array('jquery', 'wp-ajax-response'), '', true);
-			wp_enqueue_style('plugin-notes', plugins_url('plugin-notes/plugin-notes.css'), false, '', 'all');
+			wp_enqueue_script('plugin-notes', plugins_url('plugin-notes/plugin-notes.js'), array('jquery', 'wp-ajax-response'), PLUGIN_NOTES_VERSION, true);
+			wp_enqueue_style('plugin-notes', plugins_url('plugin-notes/plugin-notes.css'), false, PLUGIN_NOTES_VERSION, 'all');
 			?>
 			<script type="text/javascript">
 			if(!i18n || i18n == 'undefined') var i18n = {};
@@ -94,7 +100,7 @@ class plugin_notes {
 			<?php $this->_add_plugin_form($note_text, $plugin_safe_name, $plugin_file, true); ?>
 			
 			<div id="wp-plugin_note_<?php echo $plugin_safe_name ?>" ondblclick="edit_plugin_note('<?php echo $plugin_safe_name ?>');" title="Double click to edit me!">
-				<span class="wp-plugin_note"><?php echo $note_text; ?></span>
+				<span class="wp-plugin_note"><?php echo nl2br( $note_text ); ?></span>
 				<span class="wp-plugin_note_user"><?php echo $note_author->display_name; ?></span>
 				<span class="wp-plugin_note_date"><?php echo $note_date ?></span>
 				<span class="wp-plugin_note_actions">
@@ -112,7 +118,7 @@ class plugin_notes {
 		$plugin_form_style = ($hidden) ? 'style="display:none"' : '';
 		?>
 			<div id="wp-plugin_note_form_<?php echo $plugin_safe_name ?>" class="wp-plugin_note_form" <?php echo $plugin_form_style ?>>
-				<textarea name="wp-plugin_note_text_<?php echo $plugin_safe_name ?>" cols="40" rows="3"><?php echo $note ?></textarea>
+				<textarea name="wp-plugin_note_text_<?php echo $plugin_safe_name ?>" cols="40" rows="3"><?php echo $note; ?></textarea>
 				<span class="wp-plugin_note_error error" style="display: none;"></span>
 				<span class="wp-plugin_note_edit_actions">
 					<a href="#" onclick="save_plugin_note('<?php echo $plugin_safe_name ?>');return false;" class="button-primary"><?php _e('Save', 'plugin-notes') ?></a>
@@ -147,8 +153,7 @@ class plugin_notes {
 		if (current_user_can('edit_plugins')) {
 			// Get notes array
 			$notes = $this->_get_notes();
-			
-			$note_text = esc_html(trim(strip_tags($_POST['plugin_note'], '<p><a>')));
+			$note_text = trim(strip_tags( stripslashes( $_POST['plugin_note'] ), '<p><b><i><em><strong><a><img>'));
 			// TODO: Escape this?
 			$plugin = $_POST['plugin_slug'];
 			$plugin_name = esc_html($_POST['plugin_name']);
@@ -209,9 +214,11 @@ class plugin_notes {
 	function _set_notes($notes) { return update_option($this->notes_option, $notes); }
 }
 
-/** Let's get the plugin rolling **/
-// Create new instance of the plugin_notes object
-global $plugin_notes;
-$plugin_notes = new plugin_notes();
+add_action( 'init', 'plugin_notes_init' );
 
-?>
+function plugin_notes_init() {
+	/** Let's get the plugin rolling **/
+	// Create new instance of the plugin_notes object
+	global $plugin_notes;
+	$plugin_notes = new plugin_notes();
+}

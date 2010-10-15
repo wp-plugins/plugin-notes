@@ -38,3 +38,17 @@
 		display: block;
 		width: 350px;
 	}
+.plugins .inactive .wp-plugin_note_form a.button-primary {
+	color: #fff !important;
+}
+.plugins .inactive .wp-plugin_note_form a.button-primary:hover,
+.plugins .inactive .wp-plugin_note_form a.button-primary:active {
+	color: #EAF2FA !important;
+}
+.plugins .inactive .wp-plugin_note_form a.button {
+	color: #000 !important;
+}
+.plugins .inactive .wp-plugin_note_form a.button:hover,
+.plugins .inactive a.button:active {
+	color: #000 !important;
+}

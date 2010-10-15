@@ -4,7 +4,7 @@ Donate link: http://digitalize.ca/donate
 Tags: plugin, plugin notes, memo, meta, 
 Tested up to: 2.9
 Requires at least: 2.8
-Stable tag: 1.0
+Stable tag: 1.1
 
 Allows you to add notes to plugins.
 
@@ -15,6 +15,11 @@ Allows you to add notes to plugins. Useful when you're using lots of plugins and
 Note: the plugin requires PHP5+
 
 == Changelog ==
+
+= 2010-10-15 / 1.1 =
+
+* Certain HTML tags are now allowed in notes: `<p> <a> <b> <strong> <i> <em> <img>`. Thanks to [Dave Abrahams](http://www.boostpro.com) for suggesting this feature. 
+* Some style tweaks
 
 = 2009-12-04 / 1.0 =
 
