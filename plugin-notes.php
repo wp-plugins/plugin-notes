@@ -66,15 +66,14 @@ class plugin_notes {
 	 * Adds a nonce to the plugin page so we don't get nasty people doing nasty things
 	 */
 	function plugin_row_meta( $plugin_meta, $plugin_file, $plugin_data, $context ) {
-		if( isset( $this->notes[$plugin_file] ) ) {
-			$note = $this->notes[$plugin_file];
-			$this->_add_plugin_note($note, $plugin_data, $plugin_file);
-			
-			if(!$this->nonce_added) {
-				?><input type="hidden" name="wp-plugin_notes_nonce" value="<?php echo wp_create_nonce('wp-plugin_notes_nonce'); ?>" /><?php
-				$this->nonce_added = true;
-			}
+		$note = isset( $this->notes[$plugin_file] ) ? $this->notes[$plugin_file] : array();
+		$this->_add_plugin_note($note, $plugin_data, $plugin_file);
+		
+		if(!$this->nonce_added) {
+			?><input type="hidden" name="wp-plugin_notes_nonce" value="<?php echo wp_create_nonce('wp-plugin_notes_nonce'); ?>" /><?php
+			$this->nonce_added = true;
 		}
+		
 		return $plugin_meta;
 	}
 	
@@ -88,13 +87,16 @@ class plugin_notes {
 		if(is_array($note) && !empty($note['note'])) {
 			$note_class = 'wp-plugin_note_box';
 			$note_text = $note['note'];
-			$note_author =  get_userdata($note['user']);
+			$note_author = get_userdata($note['user']);
 			$note_date = $note['date'];
 			$actions[] = '<a href="#" onclick="edit_plugin_note(\''. $plugin_safe_name .'\'); return false;" id="wp-plugin_note_edit" class="edit">'. __('Edit note', 'plugin-notes') .'</a>';
 			$actions[] = '<a href="#" onclick="delete_plugin_note(\''. $plugin_safe_name .'\'); return false;" id="wp-plugin_note_delete" class="delete">'. __('Delete note', 'plugin-notes') .'</a>';
 		} else {
 			$note_class = 'wp-plugin_note_box_blank';
 			$actions[] = '<a href="#" onclick="edit_plugin_note(\''. $plugin_safe_name .'\'); return false;">'. __('Add plugin note', 'plugin-notes') .'</a>';
+			$note_text = '';
+			$note_author = null;
+			$note_date = '';
 		}
 		?>
 		<div class="<?php echo $note_class ?>">
@@ -102,7 +104,7 @@ class plugin_notes {
 			
 			<div id="wp-plugin_note_<?php echo $plugin_safe_name ?>" ondblclick="edit_plugin_note('<?php echo $plugin_safe_name ?>');" title="Double click to edit me!">
 				<span class="wp-plugin_note"><?php echo nl2br( $note_text ); ?></span>
-				<span class="wp-plugin_note_user"><?php echo $note_author->display_name; ?></span>
+				<span class="wp-plugin_note_user"><?php echo ( $note_author ) ? $note_author->display_name : ''; ?></span>
 				<span class="wp-plugin_note_date"><?php echo $note_date ?></span>
 				<span class="wp-plugin_note_actions">
 					<?php echo implode(' | ', $actions); ?>
