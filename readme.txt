@@ -4,7 +4,7 @@ Donate link: http://digitalize.ca/donate
 Tags: plugin, plugin notes, memo, meta
 Tested up to: 4.1
 Requires at least: 3.5
-Stable tag: trunk
+Stable tag: 1.2
 
 Allows you to add notes to plugins.
 
